@@ -21,15 +21,29 @@
       </a>
     </nav>
     <div class="container">
-      <p class="d-inline-block">Calcular los últimos</p>
-      <b-form-input class="d-inline-block" v-model="age" type="number" />
+      <img :src="getGifUrlPath(result_image_path)" width="175" height="175" />
+      <h2>Resultado: {{result}}</h2>
+      <h3>Ingresar la cantidad de últimos tweets para analizar</h3>
+      <b-form-input class="d-inline-block" v-model="number_tweets" type="number" />
+      <br />
+      <br />
+      <br />
+      <b-button block pill id="predict-btn" variant="primary" @click="requestSentimentAnalysis">
+        REALIZAR ANALISIS DE SENTIMIENTO
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </b-button>
       <b-button
         block
         pill
+        disabled
         id="predict-btn"
-        variant="primary"
+        variant="warning"
         @click="requestSentimentAnalysis"
-      >CALCULAR</b-button>
+      >VER DETALLES DE RESULTADOS</b-button>
     </div>
   </div>
 </template>
@@ -41,10 +55,16 @@ export default {
   data() {
     return {
       result: "NO RESULT",
-      accuracy: 0
+      accuracy: 0,
+      number_tweets: 10,
+      result_image_path: "neutral"
     };
   },
   methods: {
+    getGifUrlPath(gif) {
+      var images = require.context("../assets/", false, /\.gif$/);
+      return images("./" + gif + ".gif");
+    },
     requestSentimentAnalysis() {
       var data = {
         number_tweets: 10
