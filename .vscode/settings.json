@@ -1,4 +1,4 @@
 {
-    "python.pythonPath": "D:\\Users\\Rodrigo\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "python.pythonPath": "/Users/enzoftware/.pyenv/versions/3.7.7/bin/python",
     "python.formatting.provider": "yapf"
 }

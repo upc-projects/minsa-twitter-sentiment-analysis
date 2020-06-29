@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <b-modal id="bv-modal-heart-attack" size="xl" hide-footer>
+    <b-modal id="bv-modal-sentiment-analysis" size="xl" hide-footer>
       <h3>Detalles de los resultados</h3>
       <div class="row">
         <div class="col">
@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-      <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-heart-attack')">Ok</b-button>
+      <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-sentiment-analysis')">Ok</b-button>
     </b-modal>
     <nav class="navbar navbar-light bg-light">
       <a class="navbar-brand" href="#">
@@ -105,6 +105,7 @@ export default {
           this.details_data = result.data.details;
           console.log(this.details_data);
           this.result = result.data.mean_text;
+          console.log(result.data.mean);
           switch (result.data.mean) {
             case -1:
               this.result_image_path = "disapprove.gif";
@@ -128,7 +129,7 @@ export default {
       );
     },
     showDetailFromAnalysis() {
-      this.$bvModal.show("bv-modal-heart-attack");
+      this.$bvModal.show("bv-modal-sentiment-analysis");
     }
   }
 };
