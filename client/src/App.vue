@@ -92,7 +92,7 @@ export default {
     },
     requestSentimentAnalysis() {
       var data = {
-        number_tweets: 10
+        number_tweets: this.number_tweets
       };
       this.visible_loading = true;
       this.disable_analysis = true;
