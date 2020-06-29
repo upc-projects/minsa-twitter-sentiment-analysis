@@ -1,10 +1,28 @@
 <template>
   <div id="app">
-    <b-modal id="bv-modal-heart-attack" hide-footer>
-      <template v-slot:modal-title>Heart attack prediction result</template>
-      <div class="d-block text-center">
-        <h3>{{result}}</h3>
-        <h5>Porcentaje de precision: {{accuracy}}%</h5>
+    <b-modal id="bv-modal-heart-attack" size="xl" hide-footer>
+      <h3>Detalles de los resultados</h3>
+      <div class="row">
+        <div class="col">
+          <b>Texto del tweet</b>
+        </div>
+        <div class="col-md-auto">
+          <b>Porcentaje de acierto</b>
+        </div>
+        <div class="col col-lg-2">
+          <b>Resultado</b>
+        </div>
+      </div>
+      <div v-for="(tweet,i) in details_data" v-bind:key="i" class="d-block text-center">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">{{tweet.text}}</div>
+              <div class="col-md-auto">{{tweet.accuracy}}</div>
+              <div class="col col-lg-2">{{tweet.result}}</div>
+            </div>
+          </div>
+        </div>
       </div>
       <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-heart-attack')">Ok</b-button>
     </b-modal>
@@ -85,6 +103,7 @@ export default {
       }).then(
         result => {
           this.details_data = result.data.details;
+          console.log(this.details_data);
           this.result = result.data.mean_text;
           switch (result.data.mean) {
             case -1:
