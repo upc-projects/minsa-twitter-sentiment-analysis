@@ -21,29 +21,33 @@
       </a>
     </nav>
     <div class="container">
-      <img :src="getGifUrlPath(result_image_path)" width="175" height="175" />
+      <img :src="getimageUrlPath(result_image_path)" width="175" height="175" />
       <h2>Resultado: {{result}}</h2>
       <h3>Ingresar la cantidad de últimos tweets para analizar</h3>
       <b-form-input class="d-inline-block" v-model="number_tweets" type="number" />
       <br />
       <br />
       <br />
-      <b-button block pill id="predict-btn" variant="primary" @click="requestSentimentAnalysis">
-        REALIZAR ANALISIS DE SENTIMIENTO
-        <div class="d-flex justify-content-center">
+      <b-button
+        :disabled="disable_analysis"
+        block
+        pill
+        id="predict-btn"
+        variant="primary"
+        @click="requestSentimentAnalysis"
+      >
+        <div v-if="visible_loading" class="d-flex justify-content-center invisble">
           <div class="spinner-border" role="status">
             <span class="sr-only">Loading...</span>
           </div>
         </div>
+        <div v-else>
+          <h3>REALIZAR ANALISIS DE SENTIMIENTO</h3>
+        </div>
       </b-button>
-      <b-button
-        block
-        pill
-        disabled
-        id="predict-btn"
-        variant="warning"
-        @click="requestSentimentAnalysis"
-      >VER DETALLES DE RESULTADOS</b-button>
+      <b-button block pill id="detail-btn" variant="warning" @click="showDetailFromAnalysis">
+        <h4>VER DETALLES DE RESULTADOS</h4>
+      </b-button>
     </div>
   </div>
 </template>
@@ -54,36 +58,58 @@ export default {
   name: "App",
   data() {
     return {
-      result: "NO RESULT",
+      result: "NO_RESULT",
       accuracy: 0,
       number_tweets: 10,
-      result_image_path: "neutral"
+      result_image_path: "logo.png",
+      details_data: [],
+      disable_analysis: false,
+      visible_loading: false
     };
   },
   methods: {
-    getGifUrlPath(gif) {
-      var images = require.context("../assets/", false, /\.gif$/);
-      return images("./" + gif + ".gif");
+    getimageUrlPath(gif) {
+      var images = require.context("../assets/", false);
+      return images("./" + gif);
     },
     requestSentimentAnalysis() {
       var data = {
         number_tweets: 10
       };
+      this.visible_loading = true;
+      this.disable_analysis = true;
       axios({
         method: "POST",
-        url: " http://localhost:5000/predict",
+        url: " http://localhost:5000/sentiment-analysis",
         data: data
       }).then(
         result => {
-          this.result = result.data.response;
+          this.details_data = result.data.details;
+          this.result = result.data.mean_text;
+          switch (result.data.mean) {
+            case -1:
+              this.result_image_path = "disapprove.gif";
+              break;
+            case -0:
+              this.result_image_path = "neutral.gif";
+              break;
+            case 1:
+              this.result_image_path = "approve.gif";
+              break;
+          }
           this.accuracy = result.data.accuracy;
-          this.$bvModal.show("bv-modal-heart-attack");
           this.results = result.data;
+          this.visible_loading = false;
+
+          this.disable_analysis = false;
         },
         error => {
           console.error(error);
         }
       );
+    },
+    showDetailFromAnalysis() {
+      this.$bvModal.show("bv-modal-heart-attack");
     }
   }
 };
