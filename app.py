@@ -14,6 +14,9 @@ model = None
 def get_label(index):
     return 'Positivo' if index == 0 else ('Neutro' if index == 1 else 'Negativo')
 
+def get_index(label):
+    return 1 if label == 'Positivo' else (0 if label == 'Neutro' else -1)
+
 @app.route('/hello')
 @cross_origin()
 def hello():
@@ -47,7 +50,7 @@ def predict():
         details.append(dic)
 
     max_label = max(global_values.items(), key=operator.itemgetter(1))[0]
-    mean = round(global_values[max_label] / len(details),2)
+    mean = get_index(max_label)
 
     res = {
         "mean_text" : max_label,
