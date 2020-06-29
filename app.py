@@ -11,8 +11,11 @@ cors = CORS(app, resources={r"/foo": {"origins": "http://localhost:8080"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 model = None
 
+
 def get_label(index):
-    return 'Positivo' if index == 0 else ('Neutro' if index == 1 else 'Negativo')
+    return 'Positivo' if index == 0 else (
+        'Neutro' if index == 1 else 'Negativo')
+
 
 @app.route('/hello')
 @cross_origin()
@@ -25,12 +28,11 @@ def hello():
 def predict():
     post_data = request.data.decode("utf-8")
     data = json.loads(post_data)
-    time.sleep(5)
     ntweets = int(data['number_tweets'])
     model.get_data(ntweets)
     predictions = model.get_predictions()
 
-    global_values = {'Positivo':0, 'Negativo':0, 'Neutro':0}
+    global_values = {'Positivo': 0, 'Negativo': 0, 'Neutro': 0}
 
     details = []
 
@@ -39,7 +41,7 @@ def predict():
         values = list(predictions[index])
         label = get_label(values.index(max(values)))
         dic['text'] = text
-        dic['accuracy'] = str(round(max(values) * 100,2)) + "%"
+        dic['accuracy'] = str(round(max(values) * 100, 2)) + "%"
         dic['result'] = label
 
         global_values[label] += 1
@@ -47,13 +49,9 @@ def predict():
         details.append(dic)
 
     max_label = max(global_values.items(), key=operator.itemgetter(1))[0]
-    mean = round(global_values[max_label] / len(details),2)
+    mean = round(global_values[max_label] / len(details), 2)
 
-    res = {
-        "mean_text" : max_label,
-        "mean" : mean,
-        "details": details
-    }
+    res = {"mean_text": max_label, "mean": mean, "details": details}
 
     # number_tweets
     return res
