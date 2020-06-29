@@ -13,3 +13,12 @@ six==1.15.0
 tweepy==3.8.0
 urllib3==1.25.9
 yapf==0.30.0
+click==7.1.1
+Flask==1.1.2
+Flask-Cors==3.0.8
+itsdangerous==1.1.0
+Jinja2==2.11.2
+MarkupSafe==1.1.1
+Werkzeug==1.0.1
+scikit-learn==0.23.1
+sklearn==0.0

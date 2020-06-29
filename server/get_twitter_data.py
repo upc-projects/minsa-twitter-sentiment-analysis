@@ -22,7 +22,7 @@ tweets = tw.Cursor(api.search,
                    q=search_words,
                    lang="es",
                    tweet_mode='extended',
-                   since=date_since).items(150)
+                   since=date_since).items(1)
 
 # replace special chracters
 trans_tab = dict.fromkeys(map(ord, u'\u0301\u0308'), None)
