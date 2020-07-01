@@ -13,14 +13,14 @@
 - Python 3.x
 - Pip
 
-## Pasos para pobrar el código de generación de modelos
-- Descargar el archivo de Glove Embeddings de `http://dcc.uchile.cl/~jperez/word-embeddings/glove-sbwc.i25.vec.gz`
-- Descomprimir el archivo descargado (900 mb) y colocarlo en la siguiente ruta: `minsa-twitter-sentiment-analysis\model_processing\glove`
-- Abrir el archivo .ipynb de cualquiera de los 3 modelos y ejecutar
-
 ## Pasos para ejecutar en modo desarrollo
 
 - Descargar el repositorio o clonarlo via `git clone https://github.com/upc-projects/minsa-twitter-sentiment-analysis.git`
+
+### Pobrar el código de generación de modelos (opcional)
+- Descargar el archivo de Glove Embeddings de `http://dcc.uchile.cl/~jperez/word-embeddings/glove-sbwc.i25.vec.gz`
+- Descomprimir el archivo descargado (900 mb) y colocarlo en la siguiente ruta: `minsa-twitter-sentiment-analysis\model_processing\glove`
+- Abrir el archivo .ipynb de cualquiera de los 3 modelos y ejecutar
 
 ### Servidor
 
